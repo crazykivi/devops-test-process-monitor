@@ -6,9 +6,9 @@ STATE_FILE="/var/lib/monitoring/test-was-running"
 API_URL="https://test.com/monitoring/test/api"
 PROCESS_NAME="test"
 
-# Создании директории, если их не существует
-mkdir -p "$(dirname "$LOG_FILE")"
-mkdir -p "$(dirname "$STATE_FILE")"
+# Создание директорий с правами пользователя monitor
+install -d -m 0755 -o monitor -g monitor "$(dirname "$LOG_FILE")"
+install -d -m 0755 -o monitor -g monitor "$(dirname "$STATE_FILE")"
 
 # Функция логгирования
 log() {
@@ -17,10 +17,8 @@ log() {
 
 # Проверяем, запущен ли процесс
 if pgrep -x "$PROCESS_NAME" > /dev/null; then
-    # Процесс запущен
     CURRENTLY_RUNNING=1
 else
-    # Процесс не запущен, разумеется
     CURRENTLY_RUNNING=0
 fi
 
@@ -47,7 +45,6 @@ fi
 # Сам запрос
 if curl -fsS --max-time 10 "$API_URL" > /dev/null; then
 	# Успех
-    true
 else
     # Ошибка: недоступен или вернул ошибку
     log "Failed to reach monitoring API ($API_URL). curl exit code: $?"
