@@ -11,13 +11,13 @@ monitor-test/
 
 ---
 
-````markdown
 # Мониторинг процесса `test` и отправка статуса на API
 
+````markdown
 Скрипт автоматически проверяет каждую минуту, запущен ли процесс с именем `test`.  
 Если процесс запущен, отправляется HTTPS-запрос на `https://test.com/monitoring/test/api`.
 При перезапуске процесса или недоступности API события записываются в лог.
-
+````
 ---
 
 ## Требования
@@ -34,7 +34,6 @@ monitor-test/
 ```bash
 sudo useradd -r -s /bin/false -d /var/lib/monitoring monitor
 ```
-````
 
 2. Скопируйте файлы в систему:
 ```bash
@@ -90,5 +89,5 @@ sudo systemctl enable --now monitor-test.timer
   sudo cat /var/log/monitoring.log
   ```
 
----\
+---
 
